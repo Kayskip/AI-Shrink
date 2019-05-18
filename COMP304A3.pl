@@ -4,6 +4,9 @@
     COMP304 Assignment 3 : (Basic Prolog)
     Due Date: 20 May, 2019
 
+    1. AI Shrink
+    Note: to run the tests for this program, type tests(). or run each test individually
+
     printSentence takes a list and writes it to the terminal.
     otherwise we are outputing the desired element with a space
     then recursing on it to repeat until the list is empty.
@@ -71,6 +74,8 @@ match([i, want | XS], Result) :- transform(XS, Transformed), append([if, you, wa
 match([should, i | XS], Result) :- transform(XS, Transformed), append([if, you, want, to], Transformed, Temp),
     append(Temp, [then, i, wont, stop, you], Result).
 
+
+
 /*
     here are some other matches used for idenfying input,
     this is where i was able to replace the qm from the original 
@@ -83,24 +88,29 @@ match([should, i | XS], Result) :- transform(XS, Transformed), append([if, you, 
 */
 
 match([qm | _], Result) :- append([why, do, you, ask, '?'], [], Result).
-match([you | _], Result) :- append([let, us, not, talk, about, me], [], Result).
-match([nightmare | _], Result) :- append([do, nightmares, frighten, you, '?'], [], Result).
-
-match([fuck | _], Result) :- append([watch, your, language], [], Result).
-match([shit | _], Result) :- append([watch, your, language], [], Result).
-match([please | _], Result) :- append([i, appreciate, your, manners], [], Result).
+match([you | _], Result) :- append([lets, not, talk, about, me], [], Result).
+match([nightmare | _], Result) :- append([',',do, nightmares, frighten, you, '?'], [], Result).
 
 /*
-
-
-
-
-
+    some responses i made, used in testing :)
 */
+
+match([please | _], Result) :- append([i, appreciate, your, manners], [], Result).
+match([funny | _], Result) :- append([whats, so, funny, about,that,'?'], [], Result).
+match([shit | _], Result) :- append([please, calm, down], [], Result).
+
+/*
+    the following predicates are used to transform input words into corresponding outputs.
+    transport, uses transformWord and tail recurses on its self so it iterates through the lists,
+    eventually transforming all the elements if nessessary,
+    the role 
+*/ 
 
 transform([], []).
 transform([X | XS], [Y | YS]) :- once(transformWord(X, Y)), transform(XS, YS).
- 
+
+transformWord(List, List).
+
 transformWord(am, are).
 transformWord(my, your).
 transformWord(me, you).
@@ -112,17 +122,19 @@ transformWord(was, were).
 transformWord(your, my).
 transformWord(myself, yourself).
 
-transformWord(List, List).
-
 /*
 
-
-
-
-
-
+    testing part of the assignment was quite easy, i have created two helper
+    functions that take a list.
+    printReply(List):- forall, means we can print every possible response possible.
+    the role of the printReply is to parse through the desired Result to print after its been
+    through the AI program (answer function)
+    printTest(List):- is a simple function which writes the List(input) and calls the printReply
+    method which basically prints the Results
 
 */
+
+% 1.4 Testing
 
 printReply(List) :- forall(answer(List, Result), printSentence(Result)).
 printTest(List) :- write(List), write('\n -> '), printReply(List), write('\n').
@@ -136,26 +148,36 @@ test6() :- printTest([i, want, my, company, to, earn, some, money]).
 test7() :- printTest([i, want, to, drink, a,lot,of,beer,this,weekend]).
 test8() :- printTest([should, i, ask, this, girl, out, for, a, drink]).
 test9() :- printTest([should, i, stop, crying, about, my, nightmare]).
-test10() :- printTest([why, is, this, assignment, so, annoying,?]).
+test10() :- printTest([why, is, this, assignment, so, annoying,qm]).
 test11() :- printTest([why, do, i, cry, myself, to, sleep, qm]).
-test12() :- printTest([why, the, fuck]).
-test13() :- printTest([what, shit, is, this]).
-test14() :- printTest([please, can, i, leave, now]).
- 
-tests() :-  write('---------------\n'), 
-            write('Input\n -> Reply \n'), 
-            write('---------------\n\n'),
+test12() :- printTest([please, can, i, leave, now]).
+test13() :- printTest([funny, how, you,can,do,the,splits]).
+test14() :- printTest([funny, that, you,can,do,the,splits]).
+
+tests() :-  write('\n------------------------------------------\n'), 
             test1(), 
+            write('\n------------------------------------------\n\n'),
             test2(), 
+            write('\n------------------------------------------\n\n'),
             test3(), 
+            write('\n------------------------------------------\n\n'),
             test4(), 
+            write('\n------------------------------------------\n\n'),
             test5(), 
+            write('\n------------------------------------------\n\n'),
             test6(), 
+            write('\n------------------------------------------\n\n'),
             test7(), 
+            write('\n------------------------------------------\n\n'),
             test8(), 
+            write('\n------------------------------------------\n\n'),
             test9(),
+            write('\n------------------------------------------\n\n'),
             test10(),
+            write('\n------------------------------------------\n\n'),
             test11(), 
+            write('\n------------------------------------------\n\n'),
             test12(), 
-            test13(), 
-            test14().
+            write('\n------------------------------------------\n\n'),
+            test13(),
+            write('\n------------------------------------------\n\n').
